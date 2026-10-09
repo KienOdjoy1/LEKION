@@ -1,4 +1,4 @@
-const API_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/";
+const API_URL = "https://freedictionaryapi.com/api/v1/entries/en/";
 
 const form = document.getElementById("dictionaryForm");
 const wordInput = document.getElementById("wordInput");
