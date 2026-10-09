@@ -32,21 +32,34 @@ function clearError() {
   errorText.textContent = "";
 }
 
+
 function firstAvailableExample(entry) {
-  for (const meaning of entry.meanings || []) {
-    for (const definition of meaning.definitions || []) {
-      if (definition.example) return definition.example;
+  for (const sense of entry.senses || []) {
+    if (sense.examples?.length) {
+      const example = sense.examples[0];
+      return typeof example === "string"
+        ? example
+        : example.text || "No example sentence was provided.";
     }
   }
+
   return "No example sentence was provided for this entry.";
 }
 
 function firstAvailableDefinition(entry) {
-  for (const meaning of entry.meanings || []) {
-    const definition = meaning.definitions?.find(item => item.definition);
-    if (definition) return { partOfSpeech: meaning.partOfSpeech || "Meaning", definition: definition.definition };
+  for (const sense of entry.senses || []) {
+    if (sense.definition) {
+      return {
+        partOfSpeech: entry.partOfSpeech || "Meaning",
+        definition: sense.definition
+      };
+    }
   }
-  return { partOfSpeech: "Meaning", definition: "No definition was provided for this entry." };
+
+  return {
+    partOfSpeech: entry.partOfSpeech || "Meaning",
+    definition: "No definition was provided for this entry."
+  };
 }
 
 function findAudio(entry) {
@@ -56,17 +69,25 @@ function findAudio(entry) {
   return "";
 }
 
+
 function renderEntry(entry) {
   const meaning = firstAvailableDefinition(entry);
-  const phonetic = entry.phonetics?.find(item => item.text)?.text || entry.phonetic || "Pronunciation not available";
-  currentAudioUrl = findAudio(entry);
+
+  const phonetic =
+    entry.pronunciation ||
+    entry.phonetic ||
+    "Pronunciation not available";
+
+  currentAudioUrl = entry.audio || "";
 
   wordEl.textContent = entry.word || "Unknown word";
   phoneticEl.textContent = phonetic;
   partOfSpeechEl.textContent = meaning.partOfSpeech;
   definitionEl.textContent = meaning.definition;
   exampleEl.textContent = firstAvailableExample(entry);
-  sourceEl.textContent = "Free Dictionary API · dictionaryapi.dev";
+
+  sourceEl.textContent = "FreeDictionaryAPI · Wiktionary";
+
   audioButton.hidden = !currentAudioUrl;
   resultSection.hidden = false;
 }
@@ -120,10 +141,19 @@ form.addEventListener("submit", async (event) => {
       );
     }
 
-    const entry = Array.isArray(data) ? data[0] : null;
-    if (!entry || !entry.word || !Array.isArray(entry.meanings)) {
-      throw new Error("The dictionary service returned data in an unexpected format. Please try again.");
-    }
+    const entries = Array.isArray(data.entries)
+    ? data.entries
+    : [];
+
+    const entry = entries.find(item => item.senses?.some(
+    sense => typeof sense.definition === "string" && sense.definition
+    ));
+
+if (!entry) {
+  throw new Error(
+    "No usable definition was returned for this word."
+  );
+}
 
     renderEntry(entry);
     setStatus(`Showing the available result for “${entry.word || query}”.`, "success");
