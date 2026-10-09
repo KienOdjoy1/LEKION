@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Use LEKION to look up definitions, pronunciation, and example sentences.">
+  <title>LEKION | Dictionary</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body class="dictionary-page">
+  <header class="site-header">
+    <nav class="nav-wrap" aria-label="Main navigation">
+      <a class="brand" href="index.html" aria-label="LEKION home"><span class="brand-mark" aria-hidden="true">L</span><span>LEKION</span></a>
+      <a class="nav-cta" href="index.html"><span aria-hidden="true">←</span> Group portfolio</a>
+    </nav>
+  </header>
+  <main class="dictionary-main">
+    <section class="dictionary-intro">
+      <p class="eyebrow"><span class="eyebrow-dot"></span> YOUR WORD, EXPLAINED</p>
+      <h1>Find the meaning<br>behind <span>the word.</span></h1>
+      <p>Search an English word to explore its meaning, pronunciation, and examples of how it can be used.</p>
+    </section>
+
+    <section class="search-panel" aria-labelledby="search-title">
+      <form id="dictionaryForm">
+        <label id="search-title" for="wordInput">Which word are you looking for?</label>
+        <div class="search-row"><input type="text" id="wordInput" name="word" placeholder="Try “curious” or “bright”" autocomplete="off" required><button class="button" id="searchButton" type="submit">Search <span aria-hidden="true">↗</span></button></div>
+        <p class="search-hint">Tip: search one English word for the clearest result.</p>
+      </form>
+    </section>
+
+    <p id="statusMessage" class="status-message" role="status" aria-live="polite">Enter a word above to get started.</p>
+    <section id="errorMessage" class="error-message" aria-live="polite" hidden><h2>We couldn't find that word.</h2><p id="errorText">Please check the spelling and try again.</p></section>
+
+    <section id="dictionaryResult" class="dictionary-result" aria-live="polite" aria-labelledby="resultHeading">
+      <div class="result-topline"><h2 id="resultHeading">Your word card</h2><span class="result-tag">DICTIONARY ENTRY</span></div>
+      <article class="word-information"><div><h3 id="word">Welcome</h3><p id="phonetic">Start by searching above</p></div><button id="audioButton" class="audio-button" type="button" aria-label="Play pronunciation" hidden>▶</button></article>
+      <div class="result-details">
+        <article class="detail-card meaning"><span class="detail-number">01</span><h3>Meaning</h3><p id="partOfSpeech" class="part-of-speech">Part of speech</p><p id="definition">The definition of your searched word will appear here.</p></article>
+        <article class="detail-card example"><span class="detail-number">02</span><h3>Example</h3><p id="example">An example sentence will appear here when one is available.</p></article>
+        <article class="detail-card source"><span class="detail-number">03</span><h3>Source</h3><p id="source">Free Dictionary API</p></article>
+        <article class="detail-card search-note"><span class="detail-number">04</span><h3>Quick note</h3><p>Some words have multiple meanings. This card shows the first available definition from the API.</p></article>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="footer-inner"><a class="footer-brand" href="index.html">LEKION<span>.</span></a><p>Dictionary Application</p><p><a href="index.html">Back to our group</a></p></div></footer>
+</body>
+</html>
